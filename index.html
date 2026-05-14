@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Static Showcase</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+	<div class="bg-layer"></div>
+	<main class="app-shell">
+		<header class="hero">
+			<p class="eyebrow">Sean's Python Memory Museum</p>
+			<h1>Static Showcase</h1>
+			<p class="subtitle">Just some random projects made around 2022 in college. Browse projects, run terminal-style demos in-browser, and inspect source code with syntax highlighting.</p>
+		</header>
+
+		<section aria-label="Project list">
+			<div id="projectGrid" class="project-grid"></div>
+			<p id="emptyState" class="empty-state" hidden>No projects found in the manifest.</p>
+		</section>
+	</main>
+
+	<section id="terminalOverlay" class="overlay" aria-hidden="true" hidden>
+		<div class="modal modal-terminal" role="dialog" aria-modal="true" aria-labelledby="terminalTitle">
+			<header class="modal-header">
+				<h2 id="terminalTitle">Terminal Runner</h2>
+				<div class="modal-header-actions">
+					<span id="terminalStatus" class="terminal-status-chip">Ready</span>
+					<button id="abortBtn" type="button" class="btn btn-danger" hidden>Abort</button>
+					<button class="close-btn" data-close="terminalOverlay" type="button" aria-label="Close terminal">&times;</button>
+				</div>
+			</header>
+
+			<pre id="terminalOutput" class="terminal-output" aria-live="polite"></pre>
+
+			<div id="terminalInputRow" class="terminal-input-row" hidden>
+				<span class="terminal-caret" aria-hidden="true">❯</span>
+				<input id="terminalInputField" type="text" class="terminal-input-field"
+					autocomplete="off" spellcheck="false" placeholder="type then press Enter…">
+				<button id="terminalSendBtn" type="button" class="btn btn-primary">Enter</button>
+			</div>
+
+			<div class="terminal-footer">
+				<button id="runBtn" type="button" class="btn btn-primary">▶ Run Game</button>
+				<p id="terminalHint" class="terminal-hint">Inputs appear here as the script runs.</p>
+			</div>
+		</div>
+	</section>
+
+	<section id="codeOverlay" class="overlay" aria-hidden="true" hidden>
+		<div class="modal modal-code" role="dialog" aria-modal="true" aria-labelledby="codeTitle">
+			<header class="modal-header">
+				<h2 id="codeTitle">Source Viewer</h2>
+				<button class="close-btn" data-close="codeOverlay" type="button" aria-label="Close source viewer">&times;</button>
+			</header>
+			<p id="codeMeta" class="code-meta"></p>
+			<pre class="code-block"><code id="codeViewer" class="language-python"></code></pre>
+		</div>
+	</section>
+
+	<script src="/coi-serviceworker.js"></script>
+	<script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

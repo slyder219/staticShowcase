@@ -37,3 +37,32 @@ xterm.js
 Pyodide
 Vanilla JS modules
 Static project folders
+
+
+
+Build a static Vite website that showcases old Python projects.
+
+Requirements:
+- Use vanilla JavaScript modules, HTML, and CSS.
+- Use xterm.js for a terminal-looking UI.
+- Use Pyodide to run Python in the browser.
+- Do not load Pyodide on initial page load.
+- Lazy-load Pyodide only when the user clicks “Run in Browser.”
+- Keep a singleton Pyodide instance cached after first load.
+- Project data should come from project.json files or a central projects.js metadata file.
+- Each project card should show title, year, type, description, thumbnail, and buttons.
+- Include a modal or project detail view.
+- Include a terminal runner component.
+- Include one working example project: Terminal Snake.
+- For Snake, use JavaScript to capture arrow keys/WASD and call Python functions exposed in browser_snake.py.
+- Python should expose init_game(), set_direction(), tick(), reset_game(), and get_board().
+- JavaScript should render the returned ASCII board into xterm.js.
+- Include cleanup logic so intervals and keyboard listeners are removed when closing the demo.
+- Make the homepage lightweight and polished.
+- Include loading states:
+  - Loading Python runtime...
+  - Loading project...
+  - Starting terminal...
+- Include error handling if a project fails to load.
+- Use a clean dark/terminal-inspired aesthetic.
+- The site must be fully static and deployable to GitHub Pages.
