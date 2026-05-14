@@ -1,4 +1,4 @@
-import openai
+# import openai
 import random
 import os 
     
@@ -129,20 +129,21 @@ class gameplay():
             self.answer = list(word)
 
     def getGeneratedWord(self, difWord, num):
-        openai_key = os.environ.get("OPENAI_KEY") or os.environ.get("OPENAI_API_KEY")
-        if openai_key:
-            try:
-                client = openai.OpenAI(api_key=openai_key)
-                response = client.chat.completions.create(
-                    model="gpt-4o-mini",
-                    messages=[{"role": "user", "content": f"I'm making a hangman game. Please generate an {difWord} difficulty random word with {num} letters. Your response should contain only the word with no formatting and in all lowercase."}],
-                    temperature=.75,
-                )
-                textOut = response.choices[0].message.content.strip().lower()
-                if textOut.isalpha() and len(textOut) == num:
-                    return textOut
-            except Exception:
-                pass
+        # Original OpenAI-backed word generation preserved for sentiment/reference.
+        # openai_key = os.environ.get("OPENAI_KEY") or os.environ.get("OPENAI_API_KEY")
+        # if openai_key:
+        #     try:
+        #         client = openai.OpenAI(api_key=openai_key)
+        #         response = client.chat.completions.create(
+        #             model="gpt-4o-mini",
+        #             messages=[{"role": "user", "content": f"I'm making a hangman game. Please generate an {difWord} difficulty random word with {num} letters. Your response should contain only the word with no formatting and in all lowercase."}],
+        #             temperature=.75,
+        #         )
+        #         textOut = response.choices[0].message.content.strip().lower()
+        #         if textOut.isalpha() and len(textOut) == num:
+        #             return textOut
+        #     except Exception:
+        #         pass
         return self.getLocalWord(num)
 
     def getLocalWord(self, num):

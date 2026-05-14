@@ -183,11 +183,24 @@ async function onRunBtn() {
   if (!state.currentProject) return;
 
   if (typeof SharedArrayBuffer === "undefined") {
-    appendTerminal(
-      "[error] SharedArrayBuffer is not available.\n" +
-        "Open the site over HTTP, not file://.\n" +
-        "Run: python -m http.server 3333  then visit http://127.0.0.1:3333\n"
-    );
+    const protocol = window.location.protocol;
+    const isIsolated = window.crossOriginIsolated;
+
+    if (protocol === "file:") {
+      appendTerminal(
+        "[error] SharedArrayBuffer is not available.\n" +
+          "Open the site over HTTP, not file://.\n" +
+          "Run: python -m http.server 3333  then visit http://127.0.0.1:3333\n"
+      );
+    } else {
+      appendTerminal(
+        "[error] SharedArrayBuffer is not available on this page yet.\n" +
+          `Current page: ${window.location.origin}${window.location.pathname}\n` +
+          `crossOriginIsolated: ${String(isIsolated)}\n` +
+          "Reload once after the COI service worker installs.\n" +
+          "If it still fails, close the tab and reopen http://127.0.0.1:3333\n"
+      );
+    }
     return;
   }
 
