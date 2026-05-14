@@ -19,12 +19,15 @@
 body {
 	margin: 0;
 	min-height: 100vh;
+	min-height: 100dvh;
 	font-family: "Space Grotesk", "Segoe UI", sans-serif;
 	background: radial-gradient(circle at 12% 18%, rgba(91, 140, 255, 0.22), transparent 34%),
 		radial-gradient(circle at 88% 12%, rgba(31, 86, 200, 0.18), transparent 30%),
 		radial-gradient(circle at 50% 100%, rgba(107, 127, 255, 0.12), transparent 40%),
 		linear-gradient(155deg, #07101d, #0d1526 52%, #111d31 100%);
 	color: var(--text);
+	padding-left: env(safe-area-inset-left, 0px);
+	padding-right: env(safe-area-inset-right, 0px);
 }
 
 .bg-layer {
@@ -42,7 +45,8 @@ body {
 	z-index: 1;
 	width: min(1120px, 92vw);
 	margin: 0 auto;
-	padding: 3.5rem 0 4rem;
+	padding-top: max(3.5rem, env(safe-area-inset-top, 0px));
+	padding-bottom: max(4rem, env(safe-area-inset-bottom, 0px));
 }
 
 .hero {
@@ -175,7 +179,10 @@ h1 {
 	background: rgba(3, 7, 14, 0.72);
 	display: grid;
 	place-items: center;
-	padding: 1rem;
+	padding-top: max(1rem, env(safe-area-inset-top, 0px));
+	padding-right: max(1rem, env(safe-area-inset-right, 0px));
+	padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px));
+	padding-left: max(1rem, env(safe-area-inset-left, 0px));
 }
 
 .overlay[hidden] {
