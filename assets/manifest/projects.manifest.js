@@ -10,7 +10,7 @@ export const manifest = {
     {
       id: "snake-game",
       title: "SnakeGame",
-      summary: "Terminal input/output puzzle game that prints a board, collects coordinate inputs, and runs the board simulation.",
+      summary: "Crappy terminal input/output puzzle game that prints a board, collects coordinate inputs for reflector placement (X and Y), and runs the board simulation (a lazer from a start point to a goal endpoint).",
       year: 2022,
       tags: ["cli", "terminal", "game"],
       runtimeMode: "terminal-sim",
@@ -27,12 +27,12 @@ export const manifest = {
         allowedCommands: ["queued-input-run"],
         prompt: "snake-game> ",
       },
-      notes: "Queue each input value in order (x, y, slash type, repeat), then run the script in-browser.",
+      notes: "Interact with the terminal by entiering X, Y coordinates and reflactors as promopted. Type 0 and submit in order to run the game.",
     },
     {
       id: "hangman",
       title: "Hangman",
-      summary: "Terminal word-guessing game with difficulty selection, repeated guesses, and ASCII hangman board updates.",
+      summary: "Terminal word-guessing game with difficulty selection, repeated guesses, and ASCII hangman board updates. Traditionally used openai for word generation, but I don't feel like dealing with creating a little server just to hide the api key from you. So this uses a word bank.",
       year: 2022,
       tags: ["cli", "terminal", "game", "word"],
       runtimeMode: "terminal-sim",
