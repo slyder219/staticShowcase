@@ -1,0 +1,39 @@
+initial plan: 
+
+# Static Python Project Showcase Website Plan
+
+## Goal
+
+Build a static website that showcases old college Python projects as an interactive “memory museum.”
+
+The site should:
+
+- Display old Python projects cleanly
+- Preserve original repo/code context
+- Allow selected projects to run in-browser
+- Provide a terminal-like experience for terminal projects
+- Avoid backend/server hosting
+- Stay lightweight on initial page load
+- Work on GitHub Pages / Cloudflare Pages / Netlify
+
+---
+
+# Core Architecture
+
+## Stack
+
+Use:
+
+- **HTML / CSS / JS** or a lightweight framework like **Vite**
+- **xterm.js** for the terminal UI
+- **Pyodide** for running Python in the browser
+- Static hosting through **GitHub Pages**
+
+Recommended:
+
+```txt
+Vite
+xterm.js
+Pyodide
+Vanilla JS modules
+Static project folders
