@@ -21,7 +21,14 @@ def make_board(rowLen, colLen):
 
 def print_board(board, rowLen):
     print()
+    print("    ", end = "")
+    for i in range(1, rowLen + 1):
+        print(f"{i:^3}", end = "")
+    print()
+    # AI edit
     for i in range(len(board)):
+        if board[i][0] % rowLen == 1:
+            print(f"{int((board[i][0] - 1) / rowLen) + 1:>2} ", end = "")
         print(board[i][1], end = "")
         if board[i][0] % rowLen == 0 :
             print()
@@ -93,6 +100,10 @@ def get_slash_inputs(board, rowLen):
                 if y == 0:
                     print_board(board, rowLen)
                     return 
+                if y > rowLen:
+                    print("Please enter coordinates in the range of the board.")
+                    continue
+                # AI edit
                 slash = input("Enter type. \"/\" or \"\\\": ")
                 if slash == 0:
                     print_board(board, rowLen)
@@ -135,11 +146,11 @@ def draw_lazer(board, rowLen, curIter):
                 if "B" in board[curBox][1]:
                         print_board(board, ROWLEN)
                         print("BOMB!")
-                        return 
+                        return "lose"
                 if "E" in board[curBox][1]:
                     print_board(board, ROWLEN)
                     print("End!")
-                    return 
+                    return "win"
                 if "S" in board[curBox][1]:
                     pass
                 else:
@@ -152,6 +163,7 @@ def draw_lazer(board, rowLen, curIter):
             pass
     print()
     print_board(board, rowLen)
+    # AI edit
     
 def get_first_iter(startEnd, board, rowLen):
     # only used for the first iter b/c it will always go right from start box 
@@ -231,16 +243,27 @@ def final_run_lazer(board, rowLen, startEnd):
     # I wasn't able to loop this but there's a max of 4 reflectors so it's ok
     try:
         second = draw_lazer(board, rowLen, get_first_iter(startEnd, board, rowLen))
+        if second == "win" or second == "lose":
+            return second
         second = get_next_iter(second, board, rowLen)
         third = draw_lazer(board, rowLen, second)
+        if third == "win" or third == "lose":
+            return third
         third = get_next_iter(third, board, rowLen)
         fourth = draw_lazer(board, rowLen, third)
+        if fourth == "win" or fourth == "lose":
+            return fourth
         fourth = get_next_iter(fourth, board, rowLen)
         fifth = draw_lazer(board, rowLen, fourth)
+        if fifth == "win" or fifth == "lose":
+            return fifth
         fifth = get_next_iter(fifth, board, rowLen)
-        draw_lazer(board, rowLen, fifth)
+        final_result = draw_lazer(board, rowLen, fifth)
+        if final_result == "win" or final_result == "lose":
+            return final_result
     except TypeError:
         pass
+    # AI edit
 
 def main():
     board = make_board(ROWLEN, COLLEN)
@@ -249,7 +272,12 @@ def main():
     print_board(board, ROWLEN)
     print()
     get_slash_inputs(board, ROWLEN)
-    final_run_lazer(board, ROWLEN, startEnd)
+    result = final_run_lazer(board, ROWLEN, startEnd)
+    if result == "win":
+        print("You win!")
+    elif result == "lose":
+        print("You loose!")
+    # AI edit
     again = input("Play again? (Y/N) ")
     if "Y" in again or "y" in again:
         main()
