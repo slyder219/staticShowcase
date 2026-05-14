@@ -10,7 +10,7 @@ export const manifest = {
     {
       id: "snake-game",
       title: "SnakeGame",
-      summary: "Crappy terminal input/output puzzle game that prints a board, collects coordinate inputs for reflector placement (X and Y), and runs the board simulation (a lazer from a start point to a goal endpoint).",
+      summary: "Crappy terminal input/output puzzle game that prints a board, collects coordinate inputs for reflector placement (X and Y), and runs the board simulation (a lazer from a start point to a goal endpoint). There are flaws in this game. I have left them there. I would say I left them there for the sentiment. But the truth is I just don't care enough to fix them.",
       year: 2022,
       tags: ["cli", "terminal", "game"],
       runtimeMode: "terminal-sim",
