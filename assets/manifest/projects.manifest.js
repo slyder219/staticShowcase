@@ -4,7 +4,7 @@
 
 export const manifest = {
   manifestVersion: "0.1.0",
-  generatedAt: "2026-05-14T16:00:00Z",
+  generatedAt: "2026-05-14T16:40:00Z",
   basePath: ".",
   projects: [
     {
@@ -28,6 +28,28 @@ export const manifest = {
         prompt: "snake-game> ",
       },
       notes: "Queue each input value in order (x, y, slash type, repeat), then run the script in-browser.",
+    },
+    {
+      id: "hangman",
+      title: "Hangman",
+      summary: "Terminal word-guessing game with difficulty selection, repeated guesses, and ASCII hangman board updates.",
+      year: 2022,
+      tags: ["cli", "terminal", "game", "word"],
+      runtimeMode: "terminal-sim",
+      status: "playable",
+      entry: {
+        projectRoot: "projects/Hangman",
+        scriptLocation: "projects/Hangman/main.py",
+        scriptPath: "projects/Hangman/main.py",
+        scriptType: "python",
+        assetsPath: "projects/Hangman",
+      },
+      terminal: {
+        bootCommand: "python projects/Hangman/main.py",
+        allowedCommands: ["queued-input-run"],
+        prompt: "hangman> ",
+      },
+      notes: "Runs in the same in-browser terminal flow as SnakeGame. If no OpenAI key is present, the script falls back to its local word bank.",
     },
   ],
 };
