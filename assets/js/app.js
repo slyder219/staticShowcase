@@ -117,11 +117,11 @@ function openTerminalOverlay(project) {
 }
 
 function resetTerminalUI() {
-  terminalOutput.textContent = "Click \u25b6 Run Game to start the script.\n";
+  terminalOutput.textContent = "Click \u25b6 Run to start the script.\n";
   terminalInputRow.hidden = true;
   terminalInputField.value = "";
   runBtn.hidden = false;
-  runBtn.textContent = "\u25b6 Run Game";
+  runBtn.textContent = "\u25b6 Run";
   abortBtn.hidden = true;
   terminalHint.textContent = "Inputs appear here as the script runs.";
   setTerminalStatus("Ready");
@@ -321,9 +321,9 @@ function onAbortBtn() {
   terminalInputRow.hidden = true;
   setTerminalStatus("Aborted");
   runBtn.hidden = false;
-  runBtn.textContent = "\u25b6 Run Game";
+  runBtn.textContent = "\u25b6 Run";
   abortBtn.hidden = true;
-  terminalHint.textContent = "Click Run Game to start again.";
+  terminalHint.textContent = "Click Run to start again.";
 }
 
 async function ensurePrismAssets() {
