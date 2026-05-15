@@ -142,6 +142,15 @@ h1 {
 	flex-wrap: wrap;
 }
 
+.card-actions .btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 2.2rem;
+	line-height: 1.2;
+	white-space: nowrap;
+}
+
 .btn {
 	border: 1px solid var(--stroke);
 	border-radius: 10px;
