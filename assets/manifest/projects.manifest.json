@@ -47,6 +47,28 @@
         "prompt": "hangman> "
       },
       "notes": "Runs in the same in-browser terminal flow as SnakeGame. If no OpenAI key is present, the script falls back to its local word bank."
+    },
+    {
+      "id": "gym-data-parsing",
+      "title": "GymDataParsing",
+      "summary": "Interactive terminal script that parses messy workout-note text into a pandas DataFrame, then runs a simple exercise query to preview results.",
+      "year": 2022,
+      "tags": ["cli", "terminal", "data", "pandas"],
+      "runtimeMode": "terminal-sim",
+      "status": "playable",
+      "entry": {
+        "projectRoot": "projects/GymDataParsing",
+        "scriptLocation": "projects/GymDataParsing/main.py",
+        "scriptPath": "projects/GymDataParsing/main.py",
+        "scriptType": "python",
+        "assetsPath": "projects/GymDataParsing"
+      },
+      "terminal": {
+        "bootCommand": "python projects/GymDataParsing/main.py",
+        "allowedCommands": ["queued-input-run"],
+        "prompt": "gym-data> "
+      },
+      "notes": "Prompts for Enter-through steps, previews parsed data, and offers a 1/2/3 query choice in the same in-browser terminal flow."
     }
   ]
 }
