@@ -234,7 +234,7 @@ function startWorkerRun(script) {
   metaView = new Int32Array(metaBuffer);
   dataView = new Uint8Array(dataBuffer);
 
-  terminalWorker = new Worker("assets/js/terminal-worker.js");
+  terminalWorker = new Worker("assets/js/terminal-worker.js?v=2026-05-15-1");
   terminalWorker.onmessage = ({ data }) => handleWorkerMessage(data, script);
   terminalWorker.onerror = (e) => {
     appendTerminal(`[worker error] ${e.message}\n`);

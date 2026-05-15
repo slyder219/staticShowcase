@@ -113,14 +113,39 @@ async function ensurePackagesForScript(script) {
   await pyodide.loadPackage(packages);
 }
 
+function getMissingTopLevelModule(errorMessage) {
+  const match = String(errorMessage || "").match(/No module named ['\"]([^'\"]+)['\"]/);
+  if (!match) {
+    return null;
+  }
+  return match[1].split(".")[0];
+}
+
 async function runScript(script) {
   try {
     await ensurePackagesForScript(script);
     pyodide.runPython(script);
     self.postMessage({ type: "done" });
   } catch (err) {
+    const message = String(err?.message ?? err);
+    const missingModule = getMissingTopLevelModule(message);
+    const fallbackPackage = IMPORT_PACKAGE_MAP[missingModule];
+
+    if (fallbackPackage) {
+      try {
+        self.postMessage({ type: "status", text: `loading missing package: ${fallbackPackage}` });
+        await pyodide.loadPackage([fallbackPackage]);
+        pyodide.runPython(script);
+        self.postMessage({ type: "done" });
+        return;
+      } catch (retryErr) {
+        self.postMessage({ type: "error", message: String(retryErr?.message ?? retryErr) });
+        return;
+      }
+    }
+
     // Surface the error but don't crash the worker
-    self.postMessage({ type: "error", message: String(err?.message ?? err) });
+    self.postMessage({ type: "error", message });
   }
 }
 
