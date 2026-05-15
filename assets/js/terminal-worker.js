@@ -113,6 +113,52 @@ async function ensurePackagesForScript(script) {
   await pyodide.loadPackage(packages);
 }
 
+async function stageProjectAssets(script) {
+  const text = String(script || "");
+
+  // GymDataParsing expects assets/gymdata.txt as a local fallback path.
+  if (!text.includes("gymdata.txt")) {
+    return;
+  }
+
+  try {
+    const candidateUrls = [
+      new URL("../gymdata.txt", self.location.href).toString(),
+      new URL("/assets/gymdata.txt", self.location.origin).toString(),
+    ];
+
+    let raw = null;
+    for (const assetUrl of candidateUrls) {
+      const response = await fetch(assetUrl, { cache: "no-store" });
+      if (response.ok) {
+        raw = await response.text();
+        break;
+      }
+    }
+
+    if (raw == null) {
+      return;
+    }
+
+    try {
+      pyodide.FS.mkdirTree("/assets");
+    } catch (_err) {
+      // Directory already exists; ignore.
+    }
+
+    try {
+      pyodide.FS.mkdirTree("/home/pyodide/assets");
+    } catch (_err) {
+      // Directory already exists; ignore.
+    }
+
+    pyodide.FS.writeFile("/assets/gymdata.txt", raw, { encoding: "utf8" });
+    pyodide.FS.writeFile("/home/pyodide/assets/gymdata.txt", raw, { encoding: "utf8" });
+  } catch (_err) {
+    // Keep runtime resilient; script fallback paths can still run.
+  }
+}
+
 function getMissingTopLevelModule(errorMessage) {
   const match = String(errorMessage || "").match(/No module named ['\"]([^'\"]+)['\"]/);
   if (!match) {
@@ -124,6 +170,7 @@ function getMissingTopLevelModule(errorMessage) {
 async function runScript(script) {
   try {
     await ensurePackagesForScript(script);
+    await stageProjectAssets(script);
     pyodide.runPython(script);
     self.postMessage({ type: "done" });
   } catch (err) {

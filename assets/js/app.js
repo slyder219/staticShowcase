@@ -212,6 +212,7 @@ async function onRunBtn() {
   let script;
   try {
     script = await fetchText(getScriptPath(state.currentProject));
+    script = rewriteScriptForRuntime(script);
   } catch (err) {
     appendTerminal(`[error] ${err.message}\n`);
     runBtn.hidden = false;
@@ -234,7 +235,7 @@ function startWorkerRun(script) {
   metaView = new Int32Array(metaBuffer);
   dataView = new Uint8Array(dataBuffer);
 
-  terminalWorker = new Worker("assets/js/terminal-worker.js?v=2026-05-15-1");
+  terminalWorker = new Worker("assets/js/terminal-worker.js?v=2026-05-15-3");
   terminalWorker.onmessage = ({ data }) => handleWorkerMessage(data, script);
   terminalWorker.onerror = (e) => {
     appendTerminal(`[worker error] ${e.message}\n`);
@@ -408,6 +409,15 @@ function ensureScript(src, id) {
     script.onerror = () => reject(new Error(`Failed loading script ${src}`));
     document.head.append(script);
   });
+}
+
+function rewriteScriptForRuntime(script) {
+  if (!script) {
+    return script;
+  }
+
+  const runtimeAssetsBase = `${window.location.origin}/assets/`;
+  return String(script).replaceAll("https://showcase.seanlyder.com/assets/", runtimeAssetsBase);
 }
 
 function escapeHtml(value) {
