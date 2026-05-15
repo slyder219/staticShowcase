@@ -11,6 +11,11 @@ let dataView = null; // Uint8Array over dataBuffer: holds the UTF-8 input bytes
 let pyodide = null;
 let pendingScript = null;
 
+const IMPORT_PACKAGE_MAP = {
+  pandas: "pandas",
+  numpy: "numpy",
+};
+
 // Called synchronously from Python's patched input().
 // Blocks the worker thread until the main thread deposits data.
 function blockingReadline(prompt) {
@@ -67,8 +72,50 @@ builtins.input = _interactive_input
   }
 }
 
-function runScript(script) {
+function detectRequiredPackages(script) {
+  const packages = new Set();
+  const lines = String(script || "").split(/\r?\n/);
+
+  for (const rawLine of lines) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#")) {
+      continue;
+    }
+
+    let match = line.match(/^import\s+([^#]+)/);
+    if (match) {
+      for (const chunk of match[1].split(",")) {
+        const moduleName = chunk.trim().split(/\s+as\s+/i)[0]?.split(".")[0];
+        const pkg = IMPORT_PACKAGE_MAP[moduleName];
+        if (pkg) packages.add(pkg);
+      }
+      continue;
+    }
+
+    match = line.match(/^from\s+([A-Za-z0-9_.]+)\s+import\s+/);
+    if (match) {
+      const moduleName = match[1].split(".")[0];
+      const pkg = IMPORT_PACKAGE_MAP[moduleName];
+      if (pkg) packages.add(pkg);
+    }
+  }
+
+  return [...packages];
+}
+
+async function ensurePackagesForScript(script) {
+  const packages = detectRequiredPackages(script);
+  if (!packages.length) {
+    return;
+  }
+
+  self.postMessage({ type: "status", text: `loading packages: ${packages.join(", ")}` });
+  await pyodide.loadPackage(packages);
+}
+
+async function runScript(script) {
   try {
+    await ensurePackagesForScript(script);
     pyodide.runPython(script);
     self.postMessage({ type: "done" });
   } catch (err) {
