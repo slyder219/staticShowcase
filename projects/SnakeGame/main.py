@@ -270,7 +270,7 @@ def main():
     startEnd = random_start_end(board, ROWLEN)
     place_bombs(board, ROWLEN)
     print_board(board, ROWLEN)
-    print()
+    print("\nInstructions:\nThe 'S' is where the lazer starts, the 'E' is where it needs to get to. \nThe 'B's are bombs, if the lazer hits one you lose. \nYou can place 4 reflectors to change the direction of the lazer. \nThe '/' reflector will reflect the lazer like this: / \nThe '\\' reflector will reflect the lazer like this: \\ \nGood luck!")
     get_slash_inputs(board, ROWLEN)
     result = final_run_lazer(board, ROWLEN, startEnd)
     if result == "win":

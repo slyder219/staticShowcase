@@ -181,7 +181,10 @@ function wireGlobalEvents() {
 
 async function onRunBtn() {
   if (!state.currentProject) return;
+  await runProjectInTerminal(state.currentProject);
+}
 
+async function runProjectInTerminal(project) {
   if (typeof SharedArrayBuffer === "undefined") {
     const protocol = window.location.protocol;
     const isIsolated = window.crossOriginIsolated;
@@ -211,7 +214,7 @@ async function onRunBtn() {
 
   let script;
   try {
-    script = await fetchText(getScriptPath(state.currentProject));
+    script = await fetchText(getScriptPath(project));
     script = rewriteScriptForRuntime(script);
   } catch (err) {
     appendTerminal(`[error] ${err.message}\n`);
