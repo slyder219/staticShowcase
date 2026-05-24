@@ -22,6 +22,7 @@ const emptyState = document.querySelector("#emptyState");
 
 const terminalOverlay = document.querySelector("#terminalOverlay");
 const terminalTitle = document.querySelector("#terminalTitle");
+const terminalOutputShell = document.querySelector("#terminalOutputShell");
 const terminalOutput = document.querySelector("#terminalOutput");
 const terminalInputRow = document.querySelector("#terminalInputRow");
 const terminalInputField = document.querySelector("#terminalInputField");
@@ -30,6 +31,9 @@ const terminalStatus = document.querySelector("#terminalStatus");
 const terminalHint = document.querySelector("#terminalHint");
 const runBtn = document.querySelector("#runBtn");
 const abortBtn = document.querySelector("#abortBtn");
+
+const TERMINAL_OUTPUT_BASE_WIDTH = 520;
+const TERMINAL_OUTPUT_MIN_SCALE = 0.6;
 
 const codeOverlay = document.querySelector("#codeOverlay");
 const codeTitle = document.querySelector("#codeTitle");
@@ -114,6 +118,7 @@ function openTerminalOverlay(project) {
   terminalTitle.textContent = `${project.title} — Terminal`;
   resetTerminalUI();
   openOverlay(terminalOverlay);
+  requestAnimationFrame(syncTerminalOutputScale);
 }
 
 function resetTerminalUI() {
@@ -151,6 +156,7 @@ function wireGlobalEvents() {
   runBtn.addEventListener("click", onRunBtn);
   abortBtn.addEventListener("click", onAbortBtn);
   terminalSendBtn.addEventListener("click", onSendInput);
+  window.addEventListener("resize", syncTerminalOutputScale);
   terminalInputField.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -177,6 +183,24 @@ function wireGlobalEvents() {
       if (event.target === overlay) closeOverlay(overlay);
     });
   });
+}
+
+function syncTerminalOutputScale() {
+  if (terminalOverlay.hidden) {
+    return;
+  }
+
+  const outputWidth = terminalOutputShell.clientWidth;
+  if (!outputWidth) {
+    return;
+  }
+
+  const rawScale = outputWidth / TERMINAL_OUTPUT_BASE_WIDTH;
+  const scale = Math.min(1, Math.max(TERMINAL_OUTPUT_MIN_SCALE, rawScale));
+  const useHorizontalScroll = rawScale <= TERMINAL_OUTPUT_MIN_SCALE;
+
+  document.documentElement.style.setProperty("--terminal-output-scale", scale.toFixed(3));
+  terminalOutput.classList.toggle("terminal-output-scroll-x", useHorizontalScroll);
 }
 
 async function onRunBtn() {
@@ -350,7 +374,7 @@ async function ensurePrismAssets() {
 function appendTerminal(text) {
   if (text == null) return;
   terminalOutput.textContent += String(text);
-  terminalOutput.scrollTop = terminalOutput.scrollHeight;
+  terminalOutputShell.scrollTop = terminalOutputShell.scrollHeight;
 }
 
 function setTerminalStatus(text) {

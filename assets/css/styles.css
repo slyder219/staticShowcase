@@ -9,6 +9,11 @@
 	--accent-strong: #63a2ff;
 	--terminal-bg: #1a2d48;
 	--terminal-text: #dbe9ff;
+	--page-bg: radial-gradient(circle at 12% 18%, rgba(91, 140, 255, 0.22), transparent 34%),
+		radial-gradient(circle at 88% 12%, rgba(31, 86, 200, 0.18), transparent 30%),
+		radial-gradient(circle at 50% 100%, rgba(107, 127, 255, 0.12), transparent 40%),
+		linear-gradient(155deg, #07101d, #0d1526 52%, #111d31 100%);
+	--terminal-output-scale: 1;
 	--danger-soft: #34161d;
 }
 
@@ -16,15 +21,21 @@
 	box-sizing: border-box;
 }
 
+html {
+	min-height: 100%;
+	background-color: #07101d;
+	background-image: var(--page-bg);
+	overscroll-behavior-y: none;
+}
+
 body {
 	margin: 0;
 	min-height: 100vh;
 	min-height: 100dvh;
 	font-family: "Space Grotesk", "Segoe UI", sans-serif;
-	background: radial-gradient(circle at 12% 18%, rgba(91, 140, 255, 0.22), transparent 34%),
-		radial-gradient(circle at 88% 12%, rgba(31, 86, 200, 0.18), transparent 30%),
-		radial-gradient(circle at 50% 100%, rgba(107, 127, 255, 0.12), transparent 40%),
-		linear-gradient(155deg, #07101d, #0d1526 52%, #111d31 100%);
+	background-color: #07101d;
+	background-image: var(--page-bg);
+	background-attachment: fixed;
 	color: var(--text);
 	padding-left: env(safe-area-inset-left, 0px);
 	padding-right: env(safe-area-inset-right, 0px);
@@ -32,7 +43,7 @@ body {
 
 .bg-layer {
 	position: fixed;
-	inset: 0;
+	inset: -24vh 0;
 	background-image: linear-gradient(rgba(152, 176, 217, 0.045) 1px, transparent 1px),
 		linear-gradient(90deg, rgba(152, 176, 217, 0.045) 1px, transparent 1px);
 	background-size: 32px 32px;
@@ -238,7 +249,7 @@ h1 {
 }
 
 .modal-terminal .modal-header,
-.modal-terminal .terminal-output,
+.modal-terminal .terminal-output-shell,
 .modal-terminal .terminal-input-row,
 .modal-terminal .terminal-footer {
 	border: 1px solid rgba(158, 176, 203, 0.18);
@@ -297,20 +308,37 @@ h1 {
   white-space: nowrap;
 }
 
+.terminal-output-shell {
+	min-height: 0;
+	height: 100%;
+	min-width: 0;
+	overflow: auto;
+	background: var(--terminal-bg);
+	-webkit-overflow-scrolling: touch;
+	touch-action: pan-x pan-y;
+}
+
 .terminal-output {
 	margin: 0;
 	background: var(--terminal-bg);
 	color: var(--terminal-text);
 	min-height: 0;
-	height: 100%;
+	min-width: 100%;
+	width: 100%;
 	max-height: none;
-	overflow: auto;
-	padding: 1rem 1.1rem;
+	padding: calc(1rem * var(--terminal-output-scale)) calc(1.1rem * var(--terminal-output-scale));
 	font-family: "IBM Plex Mono", "Cascadia Code", monospace;
-	font-size: 0.85rem;
+	font-size: calc(0.85rem * var(--terminal-output-scale));
 	line-height: 1.35;
 	white-space: pre-wrap;
 	overflow-wrap: anywhere;
+}
+
+.terminal-output.terminal-output-scroll-x {
+	width: max-content;
+	white-space: pre;
+	overflow-wrap: normal;
+	word-break: normal;
 }
 
 .terminal-input-row {
